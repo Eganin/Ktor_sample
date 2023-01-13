@@ -3,6 +3,8 @@ package ru.playzone
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.cio.*
+import ru.playzone.features.login.configureLoginRouting
+import ru.playzone.features.register.configureRegisterRouting
 import ru.playzone.plugins.*
 
 fun main() {
@@ -12,4 +14,7 @@ fun main() {
 
 fun Application.module() {
     configureRouting()
+    configureLoginRouting()
+    configureRegisterRouting()
+    configureSerialization()
 }
