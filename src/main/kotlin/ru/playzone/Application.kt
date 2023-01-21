@@ -14,11 +14,15 @@ fun main() {
     Database.connect(
         url = "jdbc:postgresql://localhost:5432/postgres",
         driver = "org.postgresql.Driver",
-        password = "Zakharin0479",
+        password = "",
         user = "postgres"
     )
 
-    embeddedServer(CIO, port = 8080, host = "0.0.0.0", module = Application::module)
+    embeddedServer(
+        CIO,
+        port = 8080,
+        module = Application::module
+    )
         .start(wait = true)
 }
 

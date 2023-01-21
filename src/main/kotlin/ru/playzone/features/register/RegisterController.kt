@@ -24,7 +24,9 @@ class RegisterController(private val call: ApplicationCall) {
 
         val userDto = Users.fetchUser(login = receive.login)
 
-        userDto?.let {
+        if (userDto != null) {
+            call.respond(HttpStatusCode.Conflict, "User already exists")
+        } else {
             val token = UUID.randomUUID().toString()
 
             try {
@@ -51,7 +53,6 @@ class RegisterController(private val call: ApplicationCall) {
             )
 
             call.respond(RegisterResponseRemote(token = token))
-
-        } ?: call.respond(HttpStatusCode.Conflict, "User already exists")
+        }
     }
 }
