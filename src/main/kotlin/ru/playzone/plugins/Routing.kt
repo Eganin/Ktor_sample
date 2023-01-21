@@ -1,17 +1,18 @@
 package ru.playzone.plugins
 
-import io.ktor.server.routing.*
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
-import io.ktor.server.request.*
-import kotlinx.serialization.Serializable
+import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
 
     routing {
         get("/") {
-            call.respondText("Hello World!")
+            call.respondText { "Hello World!" }
+        }
+
+        get("/test") {
+            call.respondText { "Test Hello World" }
         }
     }
 }

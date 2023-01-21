@@ -1,4 +1,4 @@
-package ru.playzone.features.login
+package ru.playzone.features.login.models
 
 import kotlinx.serialization.Serializable
 

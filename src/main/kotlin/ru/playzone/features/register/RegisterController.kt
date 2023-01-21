@@ -9,6 +9,8 @@ import ru.playzone.database.tokens.TokenDto
 import ru.playzone.database.tokens.Tokens
 import ru.playzone.database.users.UserDto
 import ru.playzone.database.users.Users
+import ru.playzone.features.register.models.RegisterReceiveRemote
+import ru.playzone.features.register.models.RegisterResponseRemote
 import ru.playzone.utils.isValidEmail
 import java.util.*
 
@@ -16,15 +18,13 @@ class RegisterController(private val call: ApplicationCall) {
 
     suspend fun registerNewUser() {
 
-        val receive = call.receive(RegisterReceiveRemote::class)
+        val receive = call.receive<RegisterReceiveRemote>()
 
         if (!receive.email.isValidEmail()) call.respond(HttpStatusCode.BadRequest, "Email is incorrect")
 
         val userDto = Users.fetchUser(login = receive.login)
 
-        if (userDto != null) {
-            call.respond(HttpStatusCode.Conflict, "User already exists")
-        } else {
+        userDto?.let {
             val token = UUID.randomUUID().toString()
 
             try {
@@ -36,8 +36,10 @@ class RegisterController(private val call: ApplicationCall) {
                         username = ""
                     )
                 )
-            }catch (e: ExposedSQLException){
+            } catch (e: ExposedSQLException) {
                 call.respond(HttpStatusCode.Conflict, "User already exists")
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.BadRequest, "Can't create user ${e.localizedMessage}")
             }
 
             Tokens.insert(
@@ -49,6 +51,7 @@ class RegisterController(private val call: ApplicationCall) {
             )
 
             call.respond(RegisterResponseRemote(token = token))
-        }
+
+        } ?: call.respond(HttpStatusCode.Conflict, "User already exists")
     }
 }

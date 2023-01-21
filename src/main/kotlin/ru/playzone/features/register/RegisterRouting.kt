@@ -6,8 +6,7 @@ import io.ktor.server.routing.*
 fun Application.configureRegisterRouting() {
     routing {
         post("/register") {
-            val registerController = RegisterController(call=call)
-            registerController.registerNewUser()
+            RegisterController(call=call).registerNewUser()
         }
     }
 }

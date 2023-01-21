@@ -1,4 +1,4 @@
-package ru.playzone.features.register
+package ru.playzone.features.register.models
 
 import kotlinx.serialization.Serializable
 

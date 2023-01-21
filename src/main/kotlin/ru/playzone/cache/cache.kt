@@ -1,6 +1,6 @@
-package ru.playzone.features.cache
+package ru.playzone.cache
 
-import ru.playzone.features.register.RegisterReceiveRemote
+import ru.playzone.features.register.models.RegisterReceiveRemote
 
 data class TokenCache(
     val login: String,
